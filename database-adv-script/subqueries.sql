@@ -1,5 +1,10 @@
-SELECT u.*
-FROM User u
-JOIN Booking b ON u.user_id = b.user_id
-GROUP BY u.user_id
-HAVING COUNT(b.booking_id) > 3;
+SELECT *
+FROM Property
+WHERE property_id IN (
+    SELECT property_id
+    FROM Review
+    WHERE rating > 4.0
+    GROUP BY property_id
+    HAVING AVG(rating) > 4.0
+);
+
