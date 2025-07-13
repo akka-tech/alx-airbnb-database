@@ -1,5 +1,5 @@
--- Initial query before optimization
-SELECT
+-- Analyze the original (unoptimized) query using EXPLAIN
+EXPLAIN SELECT
   b.booking_id,
   b.start_date,
   b.end_date,
@@ -16,10 +16,12 @@ SELECT
 FROM Booking b
 JOIN User u ON b.user_id = u.user_id
 JOIN Property p ON b.property_id = p.property_id
-JOIN Payment pay ON pay.booking_id = b.booking_id;
+JOIN Payment pay ON pay.booking_id = b.booking_id
+WHERE b.status = 'confirmed'
+  AND pay.payment_method = 'credit_card';
 
--- Optimized query
-SELECT
+-- Optimized version of the query
+EXPLAIN SELECT
   b.booking_id,
   b.start_date,
   b.end_date,
@@ -32,4 +34,7 @@ SELECT
 FROM Booking b
 JOIN User u ON b.user_id = u.user_id
 JOIN Property p ON b.property_id = p.property_id
-JOIN Payment pay ON pay.booking_id = b.booking_id;
+JOIN Payment pay ON pay.booking_id = b.booking_id
+WHERE b.status = 'confirmed'
+  AND pay.payment_method = 'credit_card';
+
